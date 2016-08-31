@@ -7,7 +7,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> - FLEX by INTI</title>
-
+             <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
@@ -52,9 +53,26 @@
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <LoggedInTemplate>
                             <ul class="nav navbar-nav">
-                                <li><a runat="server" href="~/">Home</a></li>
-                                <li><a runat="server" href="~/About">About</a></li>
-                                <li><a runat="server" href="~/Contact">Contact</a></li>
+                                <li><a runat="server" href="#">Home</a></li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" runat="server" href="#">Inspection
+                                    <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a runat="server" href="~/Inspection/partSelect">Data Entry</a></li>
+                                        <li><a runat="server" href="~/Inspection/Searching">Searching</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" runat="server" href="#">Maintenance
+                                    <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a runat="server" href="~/Part_maintenance/Part.aspx">Add New Part</a></li>
+                                        <li><a runat="server" href="~/Part_maintenance/Process_Edit">Edit Part</a></li>
+                                        <li><a runat="server" href="~/Maintenance/ProfileMaintenance.aspx">User Profile</a></li>
+                                        <li><a runat="server" href="~/Maintenance/User">User Account</a></li>
+                                    </ul>
+                                </li>
+                                <li><a runat="server" href="~/Reporting/reporting">Reporting</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %> !</a></li>
@@ -67,11 +85,13 @@
                 </div>
             </div>
         </div>
+
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <hr />
+            
             <footer>
+                <hr />
                 <p>&copy; <%: DateTime.Now.Year %> - FLEX By INTI. All Rights Reserved.</p>
             </footer>
         </div>

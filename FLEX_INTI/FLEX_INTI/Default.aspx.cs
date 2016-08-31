@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace FLEX_INTI
                 // To enable password failures to trigger lockout, change to shouldLockout: true
 
                 //var result = signinManager.PasswordSignIn(Email.Text, Password.Text, RememberMe.Checked, shouldLockout: false);
-                var result = signinManager.PasswordSignIn(Email.Text, Password.Text, true, shouldLockout: false);
+                var result = signinManager.PasswordSignIn(Email.Text, Password.Text, false, shouldLockout: false);
 
                 switch (result)
                 {
@@ -44,7 +45,7 @@ namespace FLEX_INTI
                         //                  true);
                         Response.Redirect(String.Format("/Account/TwoFactorAuthenticationSignIn?ReturnUrl={0}&RememberMe={1}",
                                                         Request.QueryString["ReturnUrl"],
-                                                        true),
+                                                        false),
                                           true);
 
                         break;
@@ -55,6 +56,11 @@ namespace FLEX_INTI
                         break;
                 }
             }
+        }
+
+        protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
+        {
+            Context.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
     }
 }

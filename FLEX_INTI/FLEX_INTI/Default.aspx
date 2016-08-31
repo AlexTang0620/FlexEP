@@ -7,11 +7,12 @@
     if (Request.IsAuthenticated)
     {
         Session["NotAuthorized"] = "False"; %>
-        
-        <div class="jumbotron">
-            <h2>Hello, <%: Context.User.Identity.GetUserName()  %>.</h2>
-        </div>
+        <h1>Main Menu</h1>
 
+        <p class="lead jumbotron">Hello, <%: Context.User.Identity.GetUserName()  %>.</p>
+        <div class="Body" style="background-image:url('/Image/landing.png'); background-size:100% 100%; background-repeat:no-repeat; height:500px;">
+            
+        </div>
 <% } %>
     <%
         else
@@ -20,9 +21,10 @@
             <div>
         <h1>Welcome</h1>
         <p class="lead jumbotron">Please login to continue.</p>
+        <div class="Body">
+            <br />
         <section id="loginForm">
                 <div class="form-horizontal">
-                    <hr />
                     <div class="form-group">
                         <asp:Label runat="server" AssociatedControlID="Email" CssClass="col-md-2 control-label">Email</asp:Label>
                         <div class="col-md-10">
@@ -50,6 +52,7 @@
                     </div>
                 </div>
             </section>
+            </div>
         </div>
         <% } %>
 
