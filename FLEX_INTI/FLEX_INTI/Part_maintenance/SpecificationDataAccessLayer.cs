@@ -23,7 +23,7 @@ namespace FLEX_INTI.Part_maintenance
         {
             List<Specification> listSpec = new List<Specification>();
 
-            string CS = ConfigurationManager.ConnectionStrings["flexDB"].ConnectionString;
+            string CS = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection con = new SqlConnection(CS))
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM specificationMstr WHERE processID = @processID", con);

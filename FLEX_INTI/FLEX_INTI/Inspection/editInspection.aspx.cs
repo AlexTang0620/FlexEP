@@ -101,10 +101,10 @@ namespace FLEX_INTI.Inspection
             group.Controls.Add(LB7);
             group.Controls.Add(new LiteralControl("<br><br>"));
 
-            sql = "SELECT * FROM specificationMstr WHERE processID = " + processID + " ORDER BY specificationNumber";
+            sql = "SELECT * FROM checkpointMstr WHERE processID = " + processID + " ORDER BY checkpointNumber";
             DataTable dt = DA.GetData(sql);
 
-            sql = "SELECT * FROM specificationEntry WHERE batchID = 2 ORDER BY specificationID";
+            sql = "SELECT * FROM checkpointEntry WHERE batchID = 2 ORDER BY checkpointID";
             DataTable dt1 = DA.GetData(sql);
 
             // Select all checkpoint from database and generate textbox
@@ -115,11 +115,11 @@ namespace FLEX_INTI.Inspection
                 LB.CssClass = "entryLabel";
 
                 Label LB2 = new Label();
-                LB2.Text = Convert.ToString(dt.Rows[x]["specificationName"]);
+                LB2.Text = Convert.ToString(dt.Rows[x]["checkpointCharacteristic"]);
                 LB2.CssClass = "entryLabel";
 
                 Label LB3 = new Label();
-                LB3.Text = Convert.ToString(dt.Rows[x]["specificationRange"]);
+                LB3.Text = Convert.ToString(dt.Rows[x]["checkpointSpecification"]);
                 LB3.CssClass = "entryLabel";
 
                 TextBox tx = new TextBox();
@@ -127,7 +127,7 @@ namespace FLEX_INTI.Inspection
                 tx.ID = "Checkpoint" + x;
                 foreach (DataRow rw in dt1.Rows)
                 {
-                    if (Convert.ToString(rw["specificationID"]) == Convert.ToString(dt.Rows[x]["specificationID"]))
+                    if (Convert.ToString(rw["checkpointID"]) == Convert.ToString(dt.Rows[x]["checkpointID"]))
                     {
                         tx.Text = Convert.ToString(dt1.Rows[x]["Value"]);
                     }

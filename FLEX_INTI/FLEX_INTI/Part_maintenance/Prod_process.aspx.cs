@@ -175,7 +175,7 @@ namespace FLEX_INTI.Part_maintenance
                     //specify the server folder path
                     string pathName = "IMG/" + Path.GetFileName(uploader.PostedFile.FileName);
 
-                    string CS = ConfigurationManager.ConnectionStrings["flexDB"].ConnectionString;
+                    string CS = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                     using (SqlConnection con = new SqlConnection(CS))
                     {
                             SqlCommand cmd = new SqlCommand("INSERT INTO materialMstr(materialName) VALUES ('" + pathName + "')", con);
