@@ -4,6 +4,10 @@
     <p class="lead jumbotron">Create process for part.</p>
 
     <div class="form-horizontal">
+        <p>Part Number: </p>
+        <p>Revision: </p>
+        <br />
+
         <div class="form-group row">
                <div class="col-xs-4"><asp:Button runat="server" CssClass="btn btn-info" Text="Add Process" ID="addProcess" OnClick="addProcess_Click" /></div>
 <%--               <div class="col-xs-4"><button type="button" class="btn btn-info" id="add">Add Process</button></div>--%>
@@ -20,51 +24,19 @@
         </asp:Panel> 
 
       <div id="group" runat="server">
-<%--            <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <a href="#colap" class="panel-title pull-left" data-toggle="collapse" data-target="#colap">Process 1</a>
-                    
-                    <button type="button" id="editbtn" class="btn btn-info">Edit process</button>
-                    <button type="button" id="specAdd" class="btn btn-info" value="1">Add specification &raquo;</button>
-                    <div class="clearfix"></div>
-                </div>
-                <div id="colap" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <asp:Label CssClass="col-md-2 control-label" Text="Process name: " runat="server"></asp:Label>
-                            <asp:TextBox ID="txtName1" CssClass="form-control" runat="server"></asp:TextBox>
-                        </div>
-
-                        <div class="form-group">
-                            <asp:Label CssClass="col-md-2 control-label" Text="Process number: " runat="server"></asp:Label>
-                            <asp:TextBox ID="txtNum1" CssClass="form-control" runat="server"></asp:TextBox>
-                        </div>
-                            
-                        <div class="form-group">
-                            <asp:Label CssClass="col-md-2 control-label" Text="Process description: " runat="server"></asp:Label>
-                            <asp:TextBox ID="txtDesc1" CssClass="form-control" runat="server"></asp:TextBox>
-                        </div>
-
-                        <div class="form-group">
-                            <asp:Label ID="lbl1" CssClass="col-md-2 control-label" runat="server"></asp:Label>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>--%>
-        </div>
+          <%-- dynamic textboxes and HTML added inside here --%>
+       </div>
 
          <div class="form-group">
             <div class="btn pull-right">
+                 <asp:Button runat="server" ID="Back" OnClick="Back_Click" CssClass ="btn btn-default" Text="Back" />
                  <asp:Button runat="server" ID="save" OnClick="Save_Click" CssClass ="btn btn-default" Text="Save" />
             </div>
         </div>
     </div>
 
-<%--    <script type="text/javascript">
-            $(document).ready(function() {
+<%--     <script type="text/javascript">
+                 $(document).ready(function() {
                 var nextId = 1;
 
                 $('#add').on("click", function () {
@@ -90,7 +62,38 @@
                     //testing only
                     //window.alert(identify);
                 });
-            });
+            });--%>
+
+<%--       $("#Image").hide();
+
+
+       var image = document.getElementById('imageToggle');
+       image.onclick = toggleImage;
+
+
+       function toggleImage() {
+           $("#Image").toggle(1000);
+           return false;
+       }
+
+       var slideIndex = 1;
+       showDivs(slideIndex);
+
+       function plusDivs(n) {
+           showDivs(slideIndex += n);
+       }
+
+       function showDivs(n) {
+           var i;
+           var x = document.getElementsByClassName("imageSlides");
+           if (n > x.length) { slideIndex = 1 }
+           if (n < 1) { slideIndex = x.length }
+           for (i = 0; i < x.length; i++) {
+               x[i].style.display = "none";
+           }
+           x[slideIndex - 1].style.display = "block";
+       }
+
      </script>--%>
 
     

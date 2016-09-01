@@ -1,113 +1,154 @@
-﻿<%@ Page Title="Edit" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Process_Edit.aspx.cs" Inherits="FLEX_INTI.Part_maintenance.Process_Edit" %>
+﻿<%@ Page Title="Edit & Delete" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Process_Edit.aspx.cs" Inherits="FLEX_INTI.Part_maintenance.Process_Edit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     
-    <script type="text/javascript">
-        function toggleExpandCollapse(name) {
-            var div = document.getElementById(name);
-            var img = document.getElementById('img'+name);
-
-            if (div.style.display == 'none') {
-                div.style.display = "inline";
-                img.src = "../Image/collapse-v2.png";
-            }
-            else {
-                div.style.display = "none";
-                img.src = "../Image/expand.png";
-            }
-        }
-
-        function toggleExpandCollapse2(name) {
-            var div = document.getElementById(name);
-            var img = document.getElementById('img' + name);
-
-            if (div.style.display == 'none') {
-                div.style.display = "inline";
-                img.src = "../Image/collapse-v2.png";
-            }
-            else {
-                div.style.display = "none";
-                img.src = "../Image/expand.png";
-            }
-        }
-    </script>
 
     <h1><%:Title %></h1>
     <p class="lead jumbotron">Edit Material/Part/Process/Specification.</p>
 
     <div class="form-horizontal">
-        <div class="form-group">
-            <asp:Label runat="server" CssClass="col-md-2 control-label">Edit: </asp:Label>
+        <ul class="nav nav-pills">
+             <li>
+                <a href="Part.aspx">Add New Part/Revision</a>
+             </li>
+             <li>
+                <a href="#">Edit & Delete Part/Process/Specification</a>
+             </li>
+            <li>
+                <a href="Delete_Material.aspx">Delete Material</a>
+             </li>
+        </ul>
+        <hr />       
 
-            <div class="dropdown">
-                <asp:DropDownList AutoPostBack="true" runat="server" CssClass="btn btn-default" ID="editWhat" OnSelectedIndexChanged="editWhat_SelectedIndexChanged">
-                    <asp:ListItem Text="Select" Value="null"></asp:ListItem>
-                    <asp:ListItem Text="Material" Value="material"></asp:ListItem>
-                    <asp:ListItem Text="Part" Value="part"></asp:ListItem>
+    <div class="form-group">
+            <asp:Label runat="server" CssClass="col-md-2 control-label">Filter by: </asp:Label>
+
+            <div class="dropdown col-md-2">
+                <asp:DropDownList runat="server" EnableViewState="true" CssClass="btn btn-default" ID="filterBy">
+                    <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                    <asp:ListItem Text="Part Number" Value="0"></asp:ListItem>
+                    <asp:ListItem Text="Material" Value="1"></asp:ListItem>
+                    <asp:ListItem Text="Released" Value="2"></asp:ListItem>
+                    <asp:ListItem Text="Created Date" Value="3"></asp:ListItem>
                 </asp:DropDownList>
             </div>
+
+            <div class="col-md-2">
+                <asp:TextBox ID="txtboxFilter" runat="server" CssClass="form-control"></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="txtboxFilter" CssClass="text-danger" ErrorMessage="Please enter a value"></asp:RequiredFieldValidator>
+            </div>
+
+            <div class="col-md-2">
+                <asp:Button runat="server" ID="btnRetrieve" CssClass="btn btn-info" Text="Retrieve Data" OnClick="btnRetrieve_Click" />
+            </div>
+
         </div>
 
         <div class="form-group">
             <asp:Panel runat="server" ID ="pnlPart">
-                <asp:GridView ID="GridView1" runat="server" DataKeyNames="partID" CssClass="table table-bordered" CellPadding="3" GridLines="Vertical" AutoGenerateColumns="False" BackColor="White" BorderColor="#999999" BorderStyle="None" BorderWidth="1px" OnRowDataBound="GridView1_RowDataBound">
+                <asp:GridView ID="GridView1" AllowPaging="true" runat="server" DataKeyNames="partID" CssClass="table table-bordered" CellPadding="3" 
+                    GridLines="Vertical" AutoGenerateColumns="False" BackColor="White" BorderColor="#999999" BorderStyle="None" 
+                    BorderWidth="1px" OnRowDataBound="GridView1_RowDataBound" OnRowEditing="GridView1_RowEditing" 
+                    OnRowDeleting="GridView1_RowDeleting" OnRowCancelingEdit="GridView1_RowCancelingEdit"
+                     OnRowUpdating="GridView1_RowUpdating">
                     <AlternatingRowStyle BackColor="#DCDCDC" />
                 <Columns>
                     <asp:TemplateField>
                         <ItemTemplate>
-                     <a href="JavaScript:toggleExpandCollapse('<%# Eval("partID") %>');">
-                    <img id="img<%# Eval("partID") %>" border="0" src="../Image/expand.png"/></a> 
+                     <button id="imgA<%# Eval("partID")%>" class="btn btn-default glyphicon glyphicon-plus" onclick="return toggleExpandCollapse('<%# Eval("partID") %>')" />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="partID" HeaderText="partID" SortExpression="partID" />
-                    <asp:BoundField DataField="partNumber" HeaderText="partNumber" SortExpression="partNumber" />
-                    <asp:BoundField DataField="revision" HeaderText="revision" SortExpression="revision" />
-                    <asp:BoundField DataField="materialID" HeaderText="materialID" SortExpression="materialID" />
-                    <asp:BoundField DataField="partName" HeaderText="partName" SortExpression="partName" />
-                    <asp:BoundField DataField="partDescription" HeaderText="partDescription" SortExpression="partDescription" />
-                    <asp:CheckBoxField DataField="isReleased" HeaderText="isReleased" SortExpression="isReleased" />
-                    <asp:BoundField DataField="createdBy" HeaderText="createdBy" SortExpression="createdBy" />
-                    <asp:BoundField DataField="createdDate" HeaderText="createdDate" SortExpression="createdDate" />
-
-                    <asp:TemplateField>
+                    <asp:TemplateField HeaderText="Part ID" Visible="false">
                         <ItemTemplate>
-                            <asp:Button ID="editPart" runat="server" Text="Edit Part" OnClick="editPart_Click" />
+                            <asp:Label ID="lblpartID" runat="server" Text='<%# Bind("partID") %>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Part Number">
+                        <EditItemTemplate>
+                            <asp:TextBox ID="editPartNum" runat="server" CssClass="form-control" Text='<%# Bind("partNumber") %>'></asp:TextBox>
+                        </EditItemTemplate>
+                        <ItemTemplate>
+                            <asp:Label ID="lblPartNum" runat="server" Text='<%# Bind("partNumber") %>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+
+                    <asp:BoundField DataField="revision" ReadOnly="true" HeaderText="Revision" SortExpression="revision" />
+                    
+                    <asp:TemplateField HeaderText="Material">
+                        <EditItemTemplate>
+                            <asp:TextBox ID="editMaterial" CssClass="form-control" runat="server" Text='<%# getMaterial(DataBinder.Eval(Container.DataItem, "materialID")) %>'></asp:TextBox>
+                        </EditItemTemplate>
+                        <ItemTemplate>
+                             <asp:Label ID="material_lbl" runat="server" Text='<%# getMaterial(DataBinder.Eval(Container.DataItem, "materialID")) %>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="Part Name">
+                        <EditItemTemplate>
+                            <asp:TextBox ID="editPartName" runat="server" CssClass="form-control" Text='<%# Bind("partName") %>'></asp:TextBox>
+                        </EditItemTemplate>
+                        <ItemTemplate>
+                            <asp:Label ID="lblPartName" runat="server" Text='<%# Bind("partName") %>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+
+                    <asp:CheckBoxField DataField="isReleased" ReadOnly="true" HeaderText="isReleased" SortExpression="isReleased" />
+
+                    <asp:BoundField DataField="createdBy" ReadOnly="true" HeaderText="Created By" SortExpression="createdBy" />
+                    <asp:BoundField DataField="createdDate" ReadOnly="true" HeaderText="Created Date" SortExpression="createdDate" />
+                    
+                    <asp:TemplateField HeaderText="Action">
+                        <EditItemTemplate>
+                            <asp:LinkButton ID="partUpdate" runat="server" Text="Update" CommandName="Update"></asp:LinkButton>
+                            <asp:LinkButton ID="partCancelUpdate" runat="server" Text="Cancel" CommandName="Cancel"></asp:LinkButton>
+                        </EditItemTemplate>
+
+                        <ItemTemplate>
+                            <asp:LinkButton ID="editPart" runat="server" Text="Edit" CommandName="Edit" />
+                            <asp:LinkButton ID="deletePart" runat="server" Text="Delete" CommandName="Delete"></asp:LinkButton>
                             <%# MyNewRow(Eval("partID")) %>
-                            <div id='<%# Eval("partID") %>' style="display:none" />
-                            <asp:GridView ID="GridView2" CssClass="table table-bordered" runat="server" DataKeyNames="partID"   CellPadding="4" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" OnRowDataBound="GridView2_RowDataBound">
+                            <div id="divA<%# Eval("partID") %>" style="display:none" />
+                            <asp:GridView ID="GridView2" CssClass="table table-bordered" runat="server" DataKeyNames="partID"   CellPadding="4" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" OnRowDataBound="GridView2_RowDataBound" OnRowEditing="GridView2_RowEditing" OnRowCancelingEdit="GridView2_RowCancelingEdit" OnRowUpdating="GridView2_RowUpdating" OnRowDeleting="GridView2_RowDeleting">
                                 <AlternatingRowStyle BackColor="White" />
                                 <Columns>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                    <a href="JavaScript:toggleExpandCollapse2('<%# Eval("processID") %>');">
-                                    <img id="img<%# Eval("processID") %>" border="0" src="../Image/expand.png"/></a> 
+                                    <button id="imgB<%# Eval("processID")%>" class="btn btn-default glyphicon glyphicon-plus" onclick="return toggleExpandCollapse2('<%# Eval("processID") %>')" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="processID">
+                                    <asp:TemplateField HeaderText="processID" Visible="false">
                                         <ItemTemplate>
                                               <asp:Label ID="procID_lbl" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "processID") %>'></asp:Label>
                                          </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="partID" HeaderText="partID" SortExpression="partID" />
-                                    <asp:BoundField DataField="processName" HeaderText="processName" SortExpression="processName" />
-                                    <asp:BoundField DataField="processNumber" HeaderText="processNumber" SortExpression="processNumber" />
-                                    <asp:BoundField DataField="processDescription" HeaderText="processDescription" SortExpression="processDescription" />
+                                    <asp:BoundField DataField="processName" HeaderText="Process Name" SortExpression="processName" />
+                                    <asp:BoundField DataField="processNumber" HeaderText="Process Number" SortExpression="processNumber" />
+
+                                    <asp:TemplateField HeaderText="Image">
+                                    <ItemTemplate>
+                                        <asp:HyperLink Text="http://www.w3schools.com/w3css/img_lights.jpg" NavigateUrl="http://www.w3schools.com/w3css/img_lights.jpg" runat="server" Target="_blank"></asp:HyperLink><br />
+                                        <asp:HyperLink Text="http://www.w3schools.com/w3css/img_fjords.jpg" NavigateUrl="http://www.w3schools.com/w3css/img_fjords.jpg" runat="server" Target="_blank"></asp:HyperLink>
+                                    </ItemTemplate>
+                    </asp:TemplateField>
+
+
+
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                             <asp:Button ID="editProcess" runat="server" Text="Edit Process" OnClick="editProcess_Click" />
-                                             <%# MyNewRow(Eval("processID")) %>
-                                             <div id='<%# Eval("processID") %>' style="display:none" />
+                                             <asp:LinkButton ID="editProcess" runat="server" Text="Edit" CommandName="Edit" />
+                                             <asp:LinkButton ID="deleteProcess" runat="server" Text="Delete" CommandName="Delete" /> 
+                                            <%# MyNewRow(Eval("processID")) %>
+                                             <div id="divB<%# Eval("processID") %>" style="display:none" />
                                              <asp:GridView ID="GridView3" CssClass="table table-bordered" runat="server" DataKeyNames="specificationID" AutoGenerateColumns="False" BackColor="White" BorderColor="#DEDFDE" BorderStyle="None" BorderWidth="1px" CellPadding="4" ForeColor="Black" GridLines="Vertical">
                                                 <AlternatingRowStyle BackColor="White" />
                                                 <Columns>
-                                                    <asp:BoundField DataField="specificationID" HeaderText="specificationID" SortExpression="specificationID" />
-                                                    <asp:BoundField DataField="processID" HeaderText="processID" SortExpression="processID" />
-                                                    <asp:BoundField DataField="specificationNumber" HeaderText="specificationNumber" SortExpression="specificationNumber" />
-                                                    <asp:BoundField DataField="specificationName" HeaderText="specificationName" SortExpression="specificationName" />
-                                                    <asp:BoundField DataField="specificationRange" HeaderText="specificationRange" SortExpression="specificationRange" />
+                                                    <asp:BoundField DataField="specificationNumber" HeaderText="Checkpoint Number" SortExpression="specificationNumber" />
+                                                    <asp:BoundField DataField="specificationName" HeaderText="Checkpoint Name" SortExpression="specificationName" />
+                                                    <asp:BoundField DataField="specificationRange" HeaderText="Checkpoint Range" SortExpression="specificationRange" />
                                                     <asp:TemplateField>
                                                         <ItemTemplate>
-                                                            <asp:Button ID="editSpec" runat="server" Text="Edit Specification" OnClick="editSpec_Click" />
+                                                            <asp:LinkButton ID="editSpec" runat="server" Text="Edit" CommandName="Edit" />
+                                                            <asp:LinkButton ID="deleteSpec" runat="server" Text="Delete" CommandName="Delete"/>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>
@@ -156,149 +197,78 @@
             <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetAllParts" TypeName="Flex.Part_maintenance.PartDataAccessLayer"></asp:ObjectDataSource>
             </asp:Panel>
 
-            <asp:Panel ID="pnlMaterial" runat="server">
-                <asp:GridView ID="GridView4" CssClass="table table-bordered" runat="server" AutoGenerateColumns="False" CellPadding="3" DataSourceID="ObjectDataSource4" GridLines="Vertical" BackColor="White" BorderColor="#999999" BorderStyle="None" BorderWidth="1px">
-                    <AlternatingRowStyle BackColor="#DCDCDC" />
-                    <Columns>
-                        <asp:BoundField DataField="materialID" HeaderText="materialID" SortExpression="materialID" />
-                        <asp:BoundField DataField="materialName" HeaderText="materialName" SortExpression="materialName" />
-                        <asp:TemplateField>
-                            <ItemTemplate>
-                                <asp:Button ID="editMaterial" runat="server" Text="Edit Material" OnClick="editMaterial_Click" />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    </Columns>
-                    <FooterStyle BackColor="#CCCCCC" ForeColor="Black" />
-                    <HeaderStyle BackColor="#000084" Font-Bold="True" ForeColor="White" />
-                    <PagerStyle BackColor="#999999" ForeColor="Black" HorizontalAlign="Center" />
-                    <RowStyle BackColor="#EEEEEE" ForeColor="Black" />
-                    <SelectedRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
-                    <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                    <SortedAscendingHeaderStyle BackColor="#0000A9" />
-                    <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                    <SortedDescendingHeaderStyle BackColor="#000065" />
-                </asp:GridView>
-                <asp:ObjectDataSource ID="ObjectDataSource4" runat="server" SelectMethod="GetAllMaterial" TypeName="Flex.Part_maintenance.MaterialDataAccessLayer"></asp:ObjectDataSource>
-            </asp:Panel>
-        </div>
-
-            <asp:Panel runat="server" ID="pnlEditMaterial">
-                <div class="form-group">
-                     <asp:Label ID="lblMatID" CssClass="col-md-2 control-label" Text ="Material ID: " runat="server"></asp:Label>
-                     <asp:TextBox ID="txtMaterialID" CssClass="form-control" Enabled="false" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblMatName" CssClass="col-md-2 control-label" Text ="Material Name: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtMaterialName" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-            </asp:Panel>
-
-             <asp:Panel runat="server" ID="pnlEditPart">
-                <div class="form-group">
-                     <asp:Label ID="lblpartID" CssClass="col-md-2 control-label" Text ="Part ID: " runat="server"></asp:Label>
-                     <asp:TextBox ID="txtpartID" CssClass="form-control" Enabled="false" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblpartNum" CssClass="col-md-2 control-label" Text ="Part Number: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtpartNum" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="LblRevision" CssClass="col-md-2 control-label" Text ="Revision: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtRevision" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblmaterial" CssClass="col-md-2 control-label" Text ="Material ID: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtMaterial" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblpartName" CssClass="col-md-2 control-label" Text ="Part Name: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtPartName" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblpartDesc" CssClass="col-md-2 control-label" Text ="Part Description: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtPartDesc" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblReleased" CssClass="col-md-2 control-label" Text ="Released: " runat="server"></asp:Label>
-                    <asp:CheckBox ID="checkReleased" runat="server" />
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblcreatedBy" CssClass="col-md-2 control-label" Text ="Created By: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtcreatedBy" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblcreatedDate" CssClass="col-md-2 control-label" Text ="Created Date: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtcreatedDate" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-            </asp:Panel>
-
-            <asp:Panel runat="server" ID="pnlEditProcess">
-                <div class="form-group">
-                    <asp:Label ID="lblprocessID" CssClass="col-md-2 control-label" Text ="Process ID: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtprocessID" CssClass="form-control" Enabled="false" runat="server"></asp:TextBox>
-                </div>
-                
-                <div class="form-group">
-                    <asp:Label ID="lblpartID2" CssClass="col-md-2 control-label" Text ="Part ID: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtPartID2" CssClass="form-control" Enabled="false" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblprocessName" CssClass="col-md-2 control-label" Text ="Process Name: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtProcessName" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblprocessNum" CssClass="col-md-2 control-label" Text ="Process Number: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtProcessNum" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-                
-                <div class="form-group">
-                    <asp:Label ID="lblprocessDesc" CssClass="col-md-2 control-label" Text ="Process Description: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtprocessDesc" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-            </asp:Panel>
-
-            <asp:Panel ID="pnlEditSpec" runat="server">
-                <div class="form-group">
-                    <asp:Label ID="lblSpecID" CssClass="col-md-2 control-label" Enabled="false" Text ="Specification ID: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtSpecID" CssClass="form-control" Enabled="false" runat="server"></asp:TextBox>
-                </div>
-                
-                <div class="form-group">
-                    <asp:Label ID="lblProcessID2" CssClass="col-md-2 control-label" Text ="Process ID: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtProcessID2" CssClass="form-control" Enabled="false" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblSpecName" CssClass="col-md-2 control-label" Text ="Specification Name: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtSpecName" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <asp:Label ID="lblSpecNum" CssClass="col-md-2 control-label" Text ="Specification Number: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtSpecNum" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-                
-                <div class="form-group">
-                    <asp:Label ID="lblSpecRange" CssClass="col-md-2 control-label" Text ="Specification Range: " runat="server"></asp:Label>
-                    <asp:TextBox ID="txtSpecRange" CssClass="form-control" runat="server"></asp:TextBox>
-                </div>
-            </asp:Panel>
-
-         <div class="form-group">
-            <div class="btn pull-right">
-                 <asp:Button runat="server" ID="save" OnClick="save_Click" CssClass ="btn btn-default" Text="Save" />
-            </div>
-        </div>
     </div>
+ </div>
+
+        <script type="text/javascript">
+        function toggleExpandCollapse(name) {
+            var div = document.getElementById('divA' + name);
+            var img = document.getElementById('imgA'+name);
+
+            if (div.style.display == 'none') {
+                div.style.display = "inline";
+                img.classList.remove('glyphicon-plus');
+                img.classList.add('glyphicon-minus');
+            }
+            else {
+                div.style.display = "none";
+                img.classList.add('glyphicon-plus');
+                img.classList.remove('glyphicon-minus');
+            }
+
+            return false;
+        }
+
+        function toggleExpandCollapse2(name) {
+            var div = document.getElementById('divB' + name);
+            var img = document.getElementById('imgB' + name);
+
+            if (div.style.display == 'none') {
+                div.style.display = "inline";
+                img.classList.remove('glyphicon-plus');
+                img.classList.add('glyphicon-minus');
+            }
+            else {
+                div.style.display = "none";
+                img.classList.add('glyphicon-plus');
+                img.classList.remove('glyphicon-minus');
+            }
+
+            return false;
+        }
+
+        $("#Image").hide();
+        $("#delLink").hide();
+
+        var image = document.getElementById('imageToggle');
+        image.onclick = toggleImage;
+
+
+        function toggleImage() {
+            $("#Image").toggle(1000);
+            $("#delLink").show();
+
+            return false;
+        }
+
+        var slideIndex = 1;
+        showDivs(slideIndex);
+
+        function plusDivs(n) {
+            showDivs(slideIndex += n);
+        }
+
+        function showDivs(n) {
+            var i;
+            var x = document.getElementsByClassName("imageSlides");
+            if (n > x.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = x.length }
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            x[slideIndex - 1].style.display = "block";
+        }
+
+    </script>
+
 </asp:Content>

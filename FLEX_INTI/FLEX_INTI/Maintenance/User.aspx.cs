@@ -105,7 +105,7 @@ namespace FLEX_INTI.Maintenance
             }
             else if(!radio_Technician.Checked && !radio_qcOperator.Checked && !radio_Supervisor.Checked && !radio_Admin.Checked)
             {
-                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Please chooose one of the the User Group Options');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Please choose one of the the User Group Options');", true);
             }
         }
         

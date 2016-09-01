@@ -10,42 +10,33 @@
 namespace FLEX_INTI.Part_maintenance {
     
     
-    public partial class Process_Spec {
+    public partial class Delete_Material {
         
         /// <summary>
-        /// addCheckpt control.
+        /// pnlMaterial control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button addCheckpt;
+        protected global::System.Web.UI.WebControls.Panel pnlMaterial;
         
         /// <summary>
-        /// group control.
+        /// GridView4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl group;
+        protected global::System.Web.UI.WebControls.GridView GridView4;
         
         /// <summary>
-        /// Back control.
+        /// ObjectDataSource4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Back;
-        
-        /// <summary>
-        /// Save control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Save;
+        protected global::System.Web.UI.WebControls.ObjectDataSource ObjectDataSource4;
     }
 }

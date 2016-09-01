@@ -220,6 +220,7 @@
     <Content Include="Image\inspection\done.png" />
     <Content Include="Image\landing.png" />
     <Content Include="Inspection\searching.aspx" />
+    <Content Include="Part_maintenance\Delete_Material.aspx" />
     <Content Include="Reporting\reporting.aspx" />
     <Content Include="Inspection\editInspection.aspx" />
     <Content Include="Maintenance\Web.config">
@@ -422,6 +423,13 @@
     </Compile>
     <Compile Include="Inspection\searching.aspx.designer.cs">
       <DependentUpon>searching.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Part_maintenance\Delete_Material.aspx.cs">
+      <DependentUpon>Delete_Material.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Part_maintenance\Delete_Material.aspx.designer.cs">
+      <DependentUpon>Delete_Material.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reporting\reporting.aspx.cs">
       <DependentUpon>reporting.aspx</DependentUpon>

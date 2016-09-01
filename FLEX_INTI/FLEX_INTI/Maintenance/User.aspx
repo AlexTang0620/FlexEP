@@ -97,7 +97,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <asp:Label runat="server" AssociatedControlID="extra_UserGroup" CssClass="col-md-2 control-label">User Group</asp:Label>
+                        <asp:Label runat="server" AssociatedControlID="extra_UserGroup" CssClass="col-md-2 control-label" style="margin-top:14px">User Group</asp:Label>
                         <div class="col-sm-12">
                             <div class="radio">
                               <asp:TextBox runat="server" ID="extra_UserGroup" CssClass="form-control" />
@@ -112,7 +112,7 @@
                                  
                                 <label style="font-weight:700; font-size: 1.0em;">
                                     <input type="radio" name="o5" value="" id="radio_Technician" runat="server"> <%-- You just need to set the required-attribute for one input of the radiogroup, but you can set it for all.--%>
-                                    <span class="cr" style="margin-left: 17px;"><i class="cr-icon fa fa-circle"></i></span>
+                                    <span class="cr" style="margin-left: 29px;"><i class="cr-icon fa fa-circle"></i></span>
                                     Technician
                                 </label>
                                   <%-- <asp:Label runat="server" AssociatedControlID="radio_Technician" CssClass="col-md-2 control-label">Technician</asp:Label>--%>

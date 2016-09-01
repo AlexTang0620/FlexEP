@@ -103,18 +103,49 @@
             
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-
+   
     <p class="lead jumbotron">Part Maintenance</p>
+    <ul class="nav nav-pills">
+                    <li>
+                        <a href="#">Add New Part/Revision</a>
+                    </li>
+                    <li>
+                        <a href="Process_Edit.aspx">Edit & Delete Part/Process/Specification</a>
+                    </li>
+                    <li>
+                        <a href="Delete_Material.aspx">Delete Material</a>
+                    </li>
+                </ul>
+                    <hr />
+     <div class="form-horizontal">
+          <div class="form-group">
+             <table>
+                <tr>
+                    <td>
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <asp:Label ID="Label1" runat="server" style="float:right; font-weight:bold;" Text="Label">Rev 1</asp:Label>
+                         
+                    </td>
+                    <td>
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <asp:Button runat="server" Text="Copy last revision" style="float:right;" CssClass="btn btn-default" />
+                    </td>
+                </tr>
+            </table>
+         </div>
+       </div>
                 <div class="form-horizontal">
                     <hr />
                     <div class="form-group">
-                        <asp:Label runat="server" AssociatedControlID="txt_PartNo" CssClass="col-md-2 control-label">Part Number</asp:Label>
+                        <asp:Label runat="server" AssociatedControlID="txt_PartNo" CssClass="col-md-2 control-label">Part No</asp:Label>
                         <div class="col-md-10">
                             <asp:TextBox runat="server" ID="txt_PartNo" CssClass="form-control" />
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="txt_PartNo"
                                 CssClass="text-danger" ErrorMessage="Part Number is required." />
                         </div>
+                         
                     </div>
+                   
                     <div class="form-group">
                         <asp:Label runat="server" AssociatedControlID="txt_PartName" CssClass="col-md-2 control-label">Part Name</asp:Label>
                         <div class="col-md-10">

@@ -4,7 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
 
+//namespace Flex
 namespace FLEX_INTI.Part_maintenance
 {
     public partial class Prod_process : System.Web.UI.Page
@@ -74,12 +79,19 @@ namespace FLEX_INTI.Part_maintenance
         }
 
         Button addSpec;
-        Label lblName, lblNum, lblDesc;
-        TextBox txtName, txtNum, txtDesc;
+        Label lblName,lblDesc;
+
+        protected void Back_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Part.aspx");
+        }
+
+        TextBox txtName,txtDesc;
+        FileUpload uploader;
 
         protected void generateHTML(int nextId)
         {
-            string HTML, HTML2, HTML3, HTML4, HTML5;
+            string HTML;
 
             HTML = "<div class=\"panel-group\">";
             HTML += "<div class=\"panel panel-default\">";
@@ -89,16 +101,15 @@ namespace FLEX_INTI.Part_maintenance
             addSpec = new Button();
             addSpec.ID = "addSpec" + nextId.ToString();
             addSpec.CssClass = "btn btn-info pull-right";
-            addSpec.Text = "Add Specification \u00BB";
+            addSpec.Text = "Add Checkpoint \u00BB";
             addSpec.Click += new EventHandler(invisible_Click);
 
             group.Controls.Add(new LiteralControl(HTML));
             group.Controls.Add(addSpec);
 
-            //first </div> is for <div class = btn-toolbar>
-            HTML2 = "</div><div id = \"colap" + nextId + "\" class=\"panel-collapse collapse\">";
-            HTML2 += "<div class=\"panel-body\"><input type=\"hidden\" id=\"processToAddSpec\" value = \""+nextId+"\">";
-            HTML2 += "<div class=\"form-group\">";
+            HTML = "</div><div id = \"colap" + nextId + "\" class=\"panel-collapse collapse\">";
+            HTML += "<div class=\"panel-body\"><input type=\"hidden\" id=\"processToAddSpec\" value = \""+nextId+"\">";
+            HTML += "<div class=\"form-group\">";
 
             lblName = new Label();
             lblName.ID = "lblname" + nextId.ToString();
@@ -109,26 +120,12 @@ namespace FLEX_INTI.Part_maintenance
             txtName.ID = "txtName" + nextId.ToString();
             txtName.CssClass = "form-control";
 
-            group.Controls.Add(new LiteralControl(HTML2));
+            group.Controls.Add(new LiteralControl(HTML));
             group.Controls.Add(lblName);
             group.Controls.Add(txtName);
 
-            HTML3 = "</div><div class =\"form-group\">";
-
-            lblNum = new Label();
-            lblNum.ID = "lblnum" + nextId.ToString();
-            lblNum.Text = "Process Number: ";
-            lblNum.CssClass = "col-md-2 control-label";
-
-            txtNum = new TextBox();
-            txtNum.ID = "txtNum" + nextId.ToString();
-            txtNum.CssClass = "form-control";
-
-            group.Controls.Add(new LiteralControl(HTML3));
-            group.Controls.Add(lblNum);
-            group.Controls.Add(txtNum);
-
-            HTML4 = "</div><div class = \"form-group\">";
+            HTML = "</div><div class =\"form-group\">";
+            HTML = "</div><div class = \"form-group\">";
 
             lblDesc = new Label();
             lblDesc.ID = "lblDesc" + nextId.ToString();
@@ -138,13 +135,62 @@ namespace FLEX_INTI.Part_maintenance
             txtDesc = new TextBox();
             txtDesc.ID = "txtDesc" + nextId.ToString();
             txtDesc.CssClass = "form-control";
-
-            group.Controls.Add(new LiteralControl(HTML4));
+       
+            group.Controls.Add(new LiteralControl(HTML));
             group.Controls.Add(lblDesc);
             group.Controls.Add(txtDesc);
 
-            HTML5 = "</div></div></div></div>";
-            group.Controls.Add(new LiteralControl(HTML5));
+            HTML = "</div><div class = \"form-group\">";
+
+            uploader = new FileUpload();
+            uploader.ID = "imgUploader" + nextId.ToString();
+            uploader.AllowMultiple = true;
+            uploader.CssClass = "col-md-3";
+
+            Button upload = new Button();
+            upload.ID = "upload" + nextId.ToString();
+            upload.CssClass = "btn btn-default";
+            upload.Text = "Upload";
+            upload.Click += new EventHandler(Upload_Click);
+
+            group.Controls.Add(new LiteralControl(HTML));
+            group.Controls.Add(uploader);
+            group.Controls.Add(upload);
+
+            HTML = "</div></div></div></div>";
+            group.Controls.Add(new LiteralControl(HTML));
+        }
+
+        protected void Upload_Click(object sender, EventArgs e)
+        {
+            if (uploader.HasFile)
+            {
+                string ext = System.IO.Path.GetExtension(uploader.FileName);
+                if (ext.ToLower() != ".gif" && ext.ToLower() != ".png" && ext.ToLower() != ".jpg" && ext.ToLower() != ".jpeg")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "popup", "alert('Invalid image format');", true);
+                }
+                else
+                {
+                    //specify the server folder path
+                    string pathName = "IMG/" + Path.GetFileName(uploader.PostedFile.FileName);
+
+                    string CS = ConfigurationManager.ConnectionStrings["flexDB"].ConnectionString;
+                    using (SqlConnection con = new SqlConnection(CS))
+                    {
+                            SqlCommand cmd = new SqlCommand("INSERT INTO materialMstr(materialName) VALUES ('" + pathName + "')", con);
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+                            con.Close();
+                            uploader.SaveAs(Server.MapPath("~/IMG/" + uploader.FileName));
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "popup", "alert('Image uploaded');", true);
+                    }
+                }
+            }
+            //else
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "popup", "alert('No image present -.-');", true);
+            //}
         }
     }
 }
